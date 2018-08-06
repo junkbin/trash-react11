@@ -1,22 +1,43 @@
 import React, { Component } from 'react';
-import {createStore} from 'redux';
+import {createStore, combineReducers, applyMiddleware} from 'redux';
+import logger from 'redux-logger';
 
 import logo from './logo.svg';
 import './App.css';
 
 /*-------------------- REDUX STARTS --------------------*/
-const reducer = (state, action)=>{
-  console.log(state, action);
-  return "Hello World";
+const reducer = (state=0, action)=>{
+  if(action.type === 'INC'){
+    return state + action.payload;
+  } else if(action.type === "DEC"){
+    return state - action.payload;
+  }
+
+  return state;
 }
 
-const store = createStore(reducer, 0);
+const defaultUserState = {"name" : "Affixus"};
+const userReducer = (state = defaultUserState , action)=>{
+  return state;
+}
+
+const defaultTweetState = [];
+const tweetsReducer = (state = defaultTweetState, action)=>{
+  return state;
+}
+
+const allReducers = combineReducers({userReducer, tweetsReducer, reducer});
+const allMiddlewares = applyMiddleware(logger);
+const store = createStore(allReducers, allMiddlewares);
 
 store.subscribe(()=>{
-  console.log("Store Changed",store.getState());  
+  console.log("Store Changed.", store.getState());  
 });
 
 store.dispatch({"type":"INC", "payload": 1});
+store.dispatch({"type":"INC", "payload": 10});
+store.dispatch({"type":"INC", "payload": 100});
+store.dispatch({"type":"DEC", "payload": 100});
 /*-------------------- REDUX ENDS ----------------------*/
 
 

@@ -34,10 +34,10 @@ store.subscribe(()=>{
   console.log("Store Changed.", store.getState());  
 });
 
-store.dispatch({"type":"INC", "payload": 1});
+/*store.dispatch({"type":"INC", "payload": 1});
 store.dispatch({"type":"INC", "payload": 10});
 store.dispatch({"type":"INC", "payload": 100});
-store.dispatch({"type":"DEC", "payload": 100});
+store.dispatch({"type":"DEC", "payload": 100});*/
 /*-------------------- REDUX ENDS ----------------------*/
 
 

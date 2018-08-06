@@ -5,6 +5,7 @@ import {applyMiddleware} from 'redux';
 import logger from 'redux-logger';
 import thunk from 'redux-thunk';
 import axios from 'axios';
+import promise from 'redux-promise-middleware';
 
 const reducers = (state, action)=>{
     switch(action.type){
@@ -26,7 +27,7 @@ const reducers = (state, action)=>{
     return state;
 };
 
-const refMiddleWare = applyMiddleware(thunk, logger);
+const refMiddleWare = applyMiddleware(promise(), thunk, logger);
 const store = createStore(reducers, refMiddleWare);
 
 store.subscribe(()=>{
@@ -46,6 +47,12 @@ store.dispatch((dispatch)=>{
     }).catch((err)=>{
         dispatch({"type":"FETCH_REQ_ERROR", payload:err});
     });
+});
+
+const url = "https://jsonplaceholder.typicode.com/posts";
+store.dispatch({
+    type : "FETCH_REQ",
+    payload : axios.get(url)
 });
 
 export default store;
